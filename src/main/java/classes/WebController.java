@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +44,9 @@ public class WebController {
 
     @PostMapping("/sms")
     String sms (@RequestBody String str){
+        str = URLDecoder.decode(str, StandardCharsets.UTF_8);
+        System.out.println("!!!   SMS    !!! : "+ str);
+
         return sendSMS(str);
 
     }
@@ -86,7 +90,7 @@ public class WebController {
             con = (HttpURLConnection) myurl.openConnection();
             con.setDoOutput(true);
             con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded utf-8");
+            con.setRequestProperty("Content-Type", "text/html; charset=utf-8");
 
             try (var wr = new DataOutputStream(con.getOutputStream())) {
                 wr.write(postData, 0, postData.length);
@@ -119,7 +123,7 @@ public class WebController {
     }
 
     public static void main(String[] args) {
-        System.out.println( sendSMS("test 1"));
+        System.out.println( sendSMS("КЕККЕКЕьььатвыаыt 1"));
     }
 
 }
